@@ -1,0 +1,20 @@
+[project]
+name = "house-prices"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mortti Mortonki", email = "" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "marimo>=0.24.2",
+    "pip>=26.2.1",
+]
+
+[project.scripts]
+house-prices = "house_prices:main"
+
+[build-system]
+requires = ["uv_build>=0.12.6,<0.13.0"]
+build-backend = "uv_build"
