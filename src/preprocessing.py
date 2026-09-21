@@ -86,3 +86,41 @@ def one_hot_encode(
     
     return df_copy, encoder
 
+
+def log_transform(
+    df: pd.DataFrame,
+    column_name: str
+) -> pd.DataFrame:
+    """
+    Applies a log1p transformation to a specified column in a DataFrame.
+    Log1p is used to handle zero values gracefully (log(1+x)).
+
+    Args:
+        df: The input DataFrame.
+        column_name: The name of the column to transform.
+
+    Returns:
+        A copy of the DataFrame with the transformed column.
+    """
+    df_copy = df.copy()
+    df_copy[column_name] = np.log1p(df_copy[column_name])
+    return df_copy
+
+def inverse_log_transform(
+    df: pd.DataFrame,
+    column_name: str
+) -> pd.DataFrame:
+    """
+    Applies an inverse log1p transformation (expm1) to a specified column in a DataFrame.
+
+    Args:
+        df: The input DataFrame.
+        column_name: The name of the column to transform.
+
+    Returns:
+        A copy of the DataFrame with the inverse transformed column.
+    """
+    df_copy = df.copy()
+    df_copy[column_name] = np.expm1(df_copy[column_name])
+    return df_copy
+
