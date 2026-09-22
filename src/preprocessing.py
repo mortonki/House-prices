@@ -44,8 +44,9 @@ def target_encode(
 def one_hot_encode(
     df: pd.DataFrame, 
     column_to_encode: str, 
-    encoder: Optional[OneHotEncoder] = None
-) -> Tuple[pd.DataFrame, OneHotEncoder]:
+    encoder: Optional[OneHotEncoder] = None,
+    drop_first: bool = False
+) -> Tuple[pd.DataFrame, OneHotEncoder, Optional[str]]:
     """
     Encodes a categorical column using Scikit-Learn's OneHotEncoder.
     
@@ -53,9 +54,13 @@ def one_hot_encode(
         df: The input DataFrame.
         column_to_encode: The name of the categorical column to encode.
         encoder: An optional pre-fitted OneHotEncoder instance.
+        drop_first: If True, drops the first category to avoid the dummy variable trap.
         
     Returns:
-        A copy of the DataFrame with the one-hot encoded columns, and the fitted OneHotEncoder.
+        A tuple containing:
+        - A copy of the DataFrame with the one-hot encoded columns.
+        - The fitted OneHotEncoder instance.
+        - The name of the dropped column (None if drop_first is False).
     """
     df_copy = df.copy()
     
@@ -71,20 +76,27 @@ def one_hot_encode(
     encoded_array = encoder.transform(X)
     
     # Get feature names
-    new_columns = encoder.get_feature_names_out([column_to_encode])
+    new_columns = encoder.get_feature_names_out([column_to_encode]).tolist()
+    
+    dropped_col = None
+    if drop_first:
+        dropped_col = new_columns[0]
+        # Slice the array to remove the first column
+        encoded_array = encoded_array[:, 1:]
+        # Update the list of column names
+        new_columns = new_columns[1:]
     
     # Create a temporary DataFrame for the encoded features
     encoded_df = pd.DataFrame(
         np.array(encoded_array), 
-        columns=new_columns.tolist(), 
+        columns=new_columns, 
         index=df_copy.index
     )
 
-    
     # Join the new columns to the copy
     df_copy = pd.concat([df_copy, encoded_df], axis=1)
     
-    return df_copy, encoder
+    return df_copy, encoder, dropped_col
 
 
 def log_transform(
