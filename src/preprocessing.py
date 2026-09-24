@@ -73,7 +73,7 @@ def one_hot_encode(
         encoder.fit(X)
     
     # Transform the column
-    encoded_array = encoder.transform(X)
+    encoded_array = np.asarray(encoder.transform(X))
     
     # Get feature names
     new_columns = encoder.get_feature_names_out([column_to_encode]).tolist()
@@ -88,7 +88,7 @@ def one_hot_encode(
     
     # Create a temporary DataFrame for the encoded features
     encoded_df = pd.DataFrame(
-        np.array(encoded_array), 
+        encoded_array, 
         columns=new_columns, 
         index=df_copy.index
     )
