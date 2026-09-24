@@ -45,8 +45,7 @@ This project aims to build a machine learning model to accurately predict house 
   ```
 
 ## Project Structure
-- `src/`: Core logic for data loading and preprocessing.
-- `house_prices/`: Shared utilities and helper functions.
+- `src/`: Core logic for data loading, preprocessing, and utilities.
 - `housing_eda.ipynb`: Entry point for exploratory analysis.
 
 ## Progress

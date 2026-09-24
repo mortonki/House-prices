@@ -1,7 +1,7 @@
 [project]
 name = "house-prices"
 version = "0.1.0"
-description = "Add your description here"
+description = "House Price Prediction Project"
 readme = "README.md"
 authors = [
     { name = "Mortti Mortonki", email = "" }
@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
-house-prices = "house_prices:main"
+house-prices = "src.main:main"
 
 [build-system]
 requires = ["uv_build>=0.12.6,<0.13.0"]
