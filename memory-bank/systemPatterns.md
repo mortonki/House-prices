@@ -1,7 +1,7 @@
 # System Patterns
 
 ## Architecture
-- **Modular Design**: The project is split into `src/` for core logic and `house_prices` for shared utilities.
+- **Modular Design**: The project is organized within the `src/` directory, which contains the core logic and utilities.
 - **Data Pipeline**: `dataloader.py` -> `preprocessing.py` -> Model Training (to be implemented/refined).
 
 ## Key Technical Decisions
@@ -12,7 +12,7 @@
 ## Component Relationships
 - `src.dataloader`: Fetches and loads the raw CSV.
 - `src.preprocessing`: Contains the heavy lifting for feature engineering.
-- `house_prices.utils`: Shared helper functions like street info extraction.
+- `src.utils`: Shared helper functions like street info extraction.
 - `housing_eda.ipynb`: Entry point for exploratory analysis.
 
 ## Critical Implementation Paths
