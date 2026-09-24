@@ -1,26 +1,23 @@
 # Active Context
 
 ## Current Work Focus
-- Verifying the project structure and aligning the Memory Bank with the actual codebase.
-- Identifying discrepancies in configuration files (e.g., `pyproject.toml`).
+- Transitioning from exploratory data analysis and preprocessing to the model training phase.
 
 ## Recent Changes
-- Verified that all core logic resides in the `src/` directory.
-- Confirmed that `src/dataloader.py`, `src/preprocessing.py`, and `src/utils.py` contain the primary functionality.
-- Identified a discrepancy in `pyproject.toml` where the `house-prices` script refers to a non-existent `house_prices` package instead of the `src/` directory contents.
-- Initialized and populated the Memory Bank files.
+- Completed EDA, feature engineering, and multicollinearity analysis.
+- Appended "Validation Strategies" section to `housing_eda.ipynb`.
+- Defined train/test split (80/20) and cross-validation plan.
 
 ## Next Steps
-- Fix the `pyproject.toml` script definition to correctly point to the source code.
-- Verify the `src/preprocessing.py` logic for consistency.
-- Ensure all utility functions in `src/utils.py` are well-documented.
-- Complete the initial EDA if any parts are missing.
+- Begin training phase using Ridge Regression and XGBoost models.
+- Evaluate and compare model performances.
+- Perform hyperparameter tuning.
 
 ## Important Decisions & Considerations
-- Using `uv` for environment management as specified in `AGENTS.md`.
-- Maintaining a clear separation between data loading (`src/dataloader.py`) and processing (`src/preprocessing.py`).
-- Using `kagglehub` for dataset acquisition.
+- Using a fixed random state (42) for reproducibility.
+- Using K-Fold Cross-Validation (K=5) for training.
+- Log transformation applied to `price`, `sqft_living`, and `sqft_lot`.
 
 ## Learnings
-- The dataset contains specific street naming conventions that require custom extraction logic.
-- The project uses a flat `src/` layout without a nested `house_prices` package, which conflicts with the current `pyproject.toml` entry.
+- Target encoding for `cityzip` effectively captures neighborhood-specific price trends.
+- Multicollinearity analysis confirmed the safety of dropping redundant features like `sqft_above` and `sqft_basement`.
