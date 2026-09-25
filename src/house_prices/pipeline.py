@@ -3,7 +3,7 @@ import numpy as np
 from typing import Tuple, Dict, Any
 from .dataloader import load_dataset
 from .features import engineer_house_features
-from .preprocessing import target_encode, one_hot_encode, log_transform
+from .preprocessing import target_encode, one_hot_encode, log_transform, inverse_log_transform
 from .models import ModelTrainer
 from sklearn.model_selection import train_test_split
 
@@ -57,7 +57,7 @@ class TrainingPipeline:
         self.trainer.train_xgboost(X_train, y_train, params=config.get("xgb_params"))
         
         print("\nEvaluation Results:")
-        self.trainer.evaluate(X_test, y_test)
+        self.trainer.evaluate(X_test, y_test, inverse_transform_func=inverse_log_transform, target_column='price')
         
         print("--- Step 6: Saving Models ---")
         self.trainer.save_models()
