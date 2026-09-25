@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 from xgboost import XGBRegressor
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 import joblib
 
 class ModelTrainer:
@@ -15,7 +15,7 @@ class ModelTrainer:
         self.models: Dict[str, Any] = {}
         self.results: Dict[str, Dict[str, float]] = {}
 
-    def train_ridge(self, X: pd.DataFrame, y: pd.Series, params: Dict[str, Any] = None) -> None:
+    def train_ridge(self, X: pd.DataFrame, y: pd.Series, params: Optional[Dict[str, Any]] = None) -> None:
         """Trains a Ridge regression model."""
         if params is None:
             params = {"alpha": 1.0}
@@ -25,7 +25,7 @@ class ModelTrainer:
         self.models["ridge"] = model
         print("Ridge model trained.")
 
-    def train_xgboost(self, X: pd.DataFrame, y: pd.Series, params: Dict[str, Any] = None) -> None:
+    def train_xgboost(self, X: pd.DataFrame, y: pd.Series, params: Optional[Dict[str, Any]] = None) -> None:
         """Trains an XGBoost regressor."""
         if params is None:
             params = {
