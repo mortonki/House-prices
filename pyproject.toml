@@ -15,10 +15,11 @@ dependencies = [
     "pip>=26.2.1",
     "scikit-learn>=1.9.1",
     "seaborn>=0.13.2",
+    "kagglehub"
 ]
 
 [project.scripts]
-house-prices = "src.main:main"
+house-prices = "house_prices.main:main"
 
 [build-system]
 requires = ["uv_build>=0.12.6,<0.13.0"]

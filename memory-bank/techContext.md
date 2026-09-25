@@ -1,21 +1,24 @@
 # Tech Context
 
 ## Technologies Used
-- **Language**: Python
-- **Data Manipulation**: Pandas, NumPy
-- **Visualization**: Matplotlib, Seaborn
-- **Environment Management**: `uv`
-- **Dataset Source**: Kaggle (via `kagglehub`)
+- Python 3.10+
+- Pandas: Data manipulation
+- NumPy: Numerical operations
+- Scikit-learn: Machine learning models
+- XGBoost: Gradient boosting
+- Joblib: Model serialization
+- Argparse: Command-line argument parsing
 
 ## Development Setup
-- Run project: `uv run house-prices`
-- Download data: `uv run python src/dataloader.py`
-- IDE: VS Code
+- Environment managed by `uv`
+- Run using `uv run house_prices`
+- Dataset acquisition via `uv run python src/dataloader.py`
 
 ## Technical Constraints
-- Must handle large CSV files efficiently.
-- Preprocessing must be idempotent and reproducible.
+- Memory limits when handling large datasets
+- Reproducibility requirements (fixed random states)
 
 ## Tool Usage Patterns
-- Use `uv` for all dependency management.
-- Follow the project structure defined in `AGENTS.md`.
+- Use `argparse` for all external configurations.
+- Use `joblib` for saving/loading models.
+- Use `log_transform` for skewed target variables.

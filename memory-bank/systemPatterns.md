@@ -1,20 +1,18 @@
 # System Patterns
 
 ## Architecture
-- **Modular Design**: The project is organized within the `src/` directory, which contains the core logic and utilities.
-- **Data Pipeline**: `dataloader.py` -> `preprocessing.py` -> Model Training (to be implemented/refined).
+- The project follows a modular design where data loading, feature engineering, preprocessing, model training, and evaluation are separated into distinct modules.
+- A `TrainingPipeline` class orchestrates the flow between these modules.
 
 ## Key Technical Decisions
-- **Preprocessing Functions**: Pure functions used for transformations (e.g., `target_encode`, `one_hot_encode`) to ensure testability.
-- **Street Extraction**: Custom regex-based extraction to handle diverse street formats.
-- **Log Transformations**: Used to normalize skewed price distributions.
+- **Configuration Management:** Parameters are passed as a configuration dictionary to the pipeline. This decouples the execution logic from the input source (CLI, config files, etc.).
+- **Model Training:** The `ModelTrainer` class handles both Ridge and XGBoost models, providing a consistent interface for training and evaluation.
+- **Reproducibility:** A fixed random state is used across all stochastic operations.
 
 ## Component Relationships
-- `src.dataloader`: Fetches and loads the raw CSV.
-- `src.preprocessing`: Contains the heavy lifting for feature engineering.
-- `src.utils`: Shared helper functions like street info extraction.
-- `housing_eda.ipynb`: Entry point for exploratory analysis.
-
-## Critical Implementation Paths
-- Ensuring consistent encoding across train/test splits.
-- Handling missing values consistently during preprocessing.
+- `dataloader.py`: Fetches raw data.
+- `features.py`: Transforms raw data into features.
+- `preprocessing.py`: Handles encoding and scaling.
+- `models.py`: Contains model definitions and training logic.
+- `pipeline.py`: Coordinates the entire process.
+- `main.py`: Entry point for running the pipeline with CLI arguments.
