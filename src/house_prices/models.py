@@ -40,7 +40,7 @@ class ModelTrainer:
         self.models["xgboost"] = model
         print("XGBoost model trained.")
 
-    def evaluate(self, X: pd.DataFrame, y: pd.Series, inverse_transform_func=None, target_column: str = None) -> None:
+    def evaluate(self, X: pd.DataFrame, y: pd.Series, inverse_transform_func=None, target_column: Optional[str] = None) -> None:
         """Evaluates all trained models."""
         for name, model in self.models.items():
             predictions = model.predict(X)
