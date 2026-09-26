@@ -85,7 +85,7 @@ def engineer_house_features(
     if rare_types is None:
         threshold = 0.02 * len(df)
         counts = df['street_type'].value_counts()
-        rare_types = counts[counts < threshold].index
+        rare_types = [str(value) for value in counts[counts.lt(threshold)].index]
     
     df['street_type'] = df['street_type'].apply(lambda x: 'Other' if x in rare_types else x)
 
