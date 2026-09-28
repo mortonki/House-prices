@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: House Prices Main",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "house_prices.main",
+            "console": "integratedTerminal"
+        }
+    ]
+}
