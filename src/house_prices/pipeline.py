@@ -3,7 +3,7 @@ import numpy as np
 from typing import Tuple, Dict, Any, Optional, List
 from .dataloader import load_dataset
 from .features import engineer_house_features as original_engineer_house_features
-from .preprocessing import target_encode, one_hot_encode, log_transform, inverse_log_transform
+from .preprocessing import target_encode, one_hot_encode, log_transform, inverse_log_transform, standardize
 from .models import ModelTrainer
 from sklearn.model_selection import train_test_split
 
@@ -76,6 +76,12 @@ class TrainingPipeline:
         # Drop redundant columns
         X_train.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
         X_test.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
+        
+        # Standardize numerical features
+        num_cols = ['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'view', 'condition', 'age_built', 'years_since_renovation', 'weekday', 'days_since_first', 'cityzip_encoded']
+        X_train, scaler = standardize(X_train, num_cols)
+        X_test, _ = standardize(X_test, num_cols, scaler=scaler)
+        
         
         print("--- Step 5: Model Training & Evaluation ---")
         self.trainer.train_ridge(X_train, y_train, params=config.get("ridge_params"))

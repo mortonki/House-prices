@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-from typing import Tuple, Optional, Union
-from sklearn.preprocessing import TargetEncoder, OneHotEncoder
+from typing import Tuple, Optional, Union, List
+from sklearn.preprocessing import TargetEncoder, OneHotEncoder, StandardScaler
 
 def target_encode(
     X: pd.DataFrame,
@@ -142,3 +142,32 @@ def inverse_log_transform(
     df_copy = df.copy()
     df_copy[column_name] = np.expm1(df_copy[column_name])
     return df_copy
+
+
+def standardize(
+    df: pd.DataFrame,
+    columns: List[str],
+    scaler: Optional[StandardScaler] = None
+) -> Tuple[pd.DataFrame, StandardScaler]:
+    """
+    Standardizes specified columns in a DataFrame using StandardScaler.
+    
+    Args:
+        df: The input DataFrame.
+        columns: List of column names to standardize.
+        scaler: An optional pre-fitted StandardScaler instance.
+    
+    Returns:
+        A tuple containing:
+        - A copy of the DataFrame with standardized columns.
+        - The fitted StandardScaler instance.
+    """
+    df_copy = df.copy()
+    
+    if scaler is None:
+        scaler = StandardScaler()
+        scaler.fit(df_copy[columns])
+    
+    df_copy[columns] = scaler.transform(df_copy[columns])
+    
+    return df_copy, scaler

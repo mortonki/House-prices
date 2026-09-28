@@ -42,11 +42,22 @@ def engineer_house_features(
         df['days_since_first'] = (df['date'] - min_date).dt.days
     else:
         df['days_since_first'] = np.nan
-    df.drop(columns=['date'], inplace=True)
+    # df.drop(columns=['date'], inplace=True)
 
     # Renovation Features
     df.loc[df['yr_renovated'] <= 0, 'yr_renovated'] = df['yr_built']
     df['was_renovated'] = (df['yr_renovated'] > df['yr_built']).astype(int)
+    
+    # Calculate Ages
+    sale_year = df['date'].dt.year
+    df['age_built'] = sale_year - df['yr_built']
+    df['years_since_renovation'] = sale_year - df['yr_renovated']
+    
+    # Drop original year columns
+    df.drop(columns=['yr_built', 'yr_renovated'], inplace=True)
+    # Date Cleanup
+    df.drop(columns=['date'], inplace=True)
+
 
     # Basement Features
     df['has_basement'] = (df['sqft_basement'] > 0).astype(int)
