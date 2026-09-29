@@ -8,11 +8,13 @@
 - XGBoost: Gradient boosting
 - Joblib: Model serialization
 - Argparse: Command-line argument parsing
+- Kagglehub: Dataset acquisition
 
 ## Development Setup
 - Environment managed by `uv`
 - Run using `uv run house_prices`
 - Dataset acquisition via `uv run python src/dataloader.py`
+- Dataset Source: `debayank2024/house-price-prediction`
 
 ## Technical Constraints
 - Memory limits when handling large datasets

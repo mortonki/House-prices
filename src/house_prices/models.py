@@ -25,7 +25,7 @@ class ModelTrainer:
         self.models["ridge"] = model
         print("Ridge model trained.")
 
-    def train_xgboost(self, X: pd.DataFrame, y: pd.Series, params: Optional[Dict[str, Any]] = None) -> None:
+    def train_xgboost(self, X: pd.DataFrame, y: pd.Series, X_val: Optional[pd.DataFrame] = None, y_val: Optional[pd.Series] = None, params: Optional[Dict[str, Any]] = None) -> None:
         """Trains an XGBoost regressor."""
         if params is None:
             params = {
@@ -35,10 +35,44 @@ class ModelTrainer:
                 "n_jobs": -1
             }
 
+        # Convert inputs to numpy arrays to avoid index alignment issues with XGBoost eval_set
+        X_arr = X.to_numpy() if hasattr(X, "to_numpy") else X
+        y_arr = y.to_numpy() if hasattr(y, "to_numpy") else y
+
+        eval_set = None
+        
+        if X_val is not None and y_val is not None:
+            if X_val.empty:
+                raise ValueError("Validation dataset is empty. Please check your data splitting logic.")
+            
+            X_val_arr = X_val.to_numpy() if hasattr(X_val, "to_numpy") else X_val
+            y_val_arr = y_val.to_numpy() if hasattr(y_val, "to_numpy") else y_val
+            
+            # If user hasn't provided eval_set in params, we provide it from X_val/y_val
+            if "eval_set" not in params:
+                eval_set = [(X_val_arr, y_val_arr)]
+                # If they didn't provide early_stopping_rounds either, set default
+                if "early_stopping_rounds" not in params:
+                    params["early_stopping_rounds"] = 50
+            else:
+                # User provided eval_set in params. 
+                # Since XGBRegressor constructor doesn't take eval_set, we pop it from params
+                # and use it for the .fit() call.
+                eval_set = params.pop("eval_set")
+
+        # Remove n_jobs if early stopping is active, as it can cause issues in some versions
+        if "early_stopping_rounds" in params or eval_set is not None:
+            params.pop("n_jobs", None)
+
+        print(f"Training XGBoost with params: {params}")
         model = XGBRegressor(**params, random_state=self.random_state)
-        model.fit(X, y)
+        
+        # Pass eval_set to fit()
+        model.fit(X_arr, y_arr, eval_set=eval_set, verbose=False)
+        
         self.models["xgboost"] = model
         print("XGBoost model trained.")
+
 
     def evaluate(self, X: pd.DataFrame, y: pd.Series, inverse_transform_func=None, target_column: Optional[str] = None) -> None:
         """Evaluates all trained models."""

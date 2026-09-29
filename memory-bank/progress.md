@@ -10,6 +10,7 @@
 - Validation strategies defined.
 - Modular training pipeline implemented.
 - Command-line interface for hyperparameter configuration.
+- Integration with `kagglehub` for dataset management.
 
 ## What's Left to Build
 - Hyperparameter optimization (e.g., GridSearch or Optuna).

@@ -54,9 +54,12 @@ This project aims to build a machine learning model to accurately predict house 
 - [x] Basic street information extraction logic.
 - [x] Core preprocessing functions (encoding, log transform).
 - [x] Initial EDA notebook completed.
-- [ ] Finalize model selection and training pipeline.
-- [ ] Hyperparameter tuning.
-- [ ] Evaluation metrics and reporting.
+- [x] Validation strategies defined.
+- [x] Modular training pipeline implemented.
+- [x] Command-line interface for hyperparameter configuration.
+- [x] Integration with `kagglehub` for dataset management.
+- [ ] Hyperparameter optimization.
+- [ ] Final model evaluation and reporting.
 - [ ] Production-ready inference script.
 
 ## Contact
