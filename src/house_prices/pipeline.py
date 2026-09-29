@@ -22,10 +22,11 @@ class TrainingPipeline:
         df = load_dataset(dataset_path)
 
         print("--- Step 1.5: Outlier Removal ---")
-        # Remove extreme price outliers (top 1%)
-        q = df['price'].quantile(0.99)
+        # Remove extreme price outliers (configurable quantile, default 0.99)
+        outlier_quantile = config.get("outlier_quantile", 0.99)
+        q = df['price'].quantile(outlier_quantile)
         df = df[df['price'] <= q].copy()
-        print(f"Removed {len(df) - len(df[df['price'] <= q])} outliers.")
+        print(f"Removed {len(df) - len(df[df['price'] <= q])} outliers based on quantile {outlier_quantile}.")
 
         print("--- Step 2: Data Splitting ---")
         X = df.drop(columns=['price'])
