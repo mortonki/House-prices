@@ -8,7 +8,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Run the house price prediction pipeline.")
     parser.add_argument("--test_size", type=float, default=0.2, help="Test set size (default: 0.2)")
     parser.add_argument("--ridge_params", type=str, default='{"alpha": 1.0}', help="Ridge parameters as JSON string")
-    parser.add_argument("--xgb_params", type=str, default='{"n_estimators": 1000, "learning_rate": 0.05, "max_depth": 6, "n_jobs": -1}', help="XGBoost parameters as JSON string")
+    parser.add_argument("--xgb_params", type=str, default='{"n_estimators": 1000, "learning_rate": 0.95, "max_depth": 16, "early_stopping_rounds": 150, "n_jobs": -1}', help="XGBoost parameters as JSON string")
     parser.add_argument("--outlier_quantile", type=float, default=0.99, help="Quantile for removing extreme price outliers (default: 0.99)")
     return parser.parse_args()
 
