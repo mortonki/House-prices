@@ -21,7 +21,11 @@ class TrainingPipeline:
         print("--- Step 1: Data Loading ---")
         df = load_dataset(dataset_path)
 
+        # Drop rows where bedrooms or bathrooms are 0.0
+        df = df[(df['bedrooms'] > 0.0) & (df['bathrooms'] > 0.0)]
+
         print("--- Step 1.5: Outlier Removal ---")
+
         # Remove extreme price outliers (configurable quantile, default 0.99)
         outlier_quantile = config.get("outlier_quantile", 0.99)
         q = df['price'].quantile(outlier_quantile)
@@ -106,7 +110,7 @@ class TrainingPipeline:
 
 
         print("--- Step 5: Model Training & Evaluation ---")
-        self.trainer.train_ridge(X_train, y_train, params=config.get("ridge_params"))
+        self.trainer.train_ridge(X_train, y_train, X_val=X_val, y_val=y_val, params=config.get("ridge_params"))
         self.trainer.train_xgboost(X_train, y_train, X_val=X_val, y_val=y_val, params=config.get("xgb_params"))
 
         print("\nValidation Results:")

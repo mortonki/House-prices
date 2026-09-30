@@ -15,7 +15,8 @@ dependencies = [
     "pip>=26.2.1",
     "scikit-learn>=1.9.1",
     "seaborn>=0.13.2",
-    "kagglehub"
+    "kagglehub",
+    "mlflow>=3.16.1",
 ]
 
 [project.scripts]
