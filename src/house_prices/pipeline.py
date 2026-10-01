@@ -21,10 +21,10 @@ class TrainingPipeline:
         print("--- Step 1: Data Loading ---")
         df = load_dataset(dataset_path)
 
+        print("--- Step 1.5: Outlier Removal ---")
+
         # Drop rows where bedrooms or bathrooms are 0.0
         df = df[(df['bedrooms'] > 0.0) & (df['bathrooms'] > 0.0)]
-
-        print("--- Step 1.5: Outlier Removal ---")
 
         # Remove extreme price outliers (configurable quantile, default 0.99)
         outlier_quantile = config.get("outlier_quantile", 0.99)
@@ -92,18 +92,21 @@ class TrainingPipeline:
         # Log transform skewed features
         X_train = log_transform(X_train, 'sqft_living')
         X_train = log_transform(X_train, 'sqft_lot')
+        X_train = log_transform(X_train, 'price_per_sqft')
         X_val = log_transform(X_val, 'sqft_living')
         X_val = log_transform(X_val, 'sqft_lot')
+        X_val = log_transform(X_val, 'price_per_sqft')
         X_test = log_transform(X_test, 'sqft_living')
         X_test = log_transform(X_test, 'sqft_lot')
+        X_test = log_transform(X_test, 'price_per_sqft')
 
         # Drop redundant columns
-        X_train.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
-        X_val.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
-        X_test.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
+        #X_train.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
+        #X_val.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
+        #X_test.drop(columns=['price_per_sqft'], inplace=True, errors='ignore')
 
         # Standardize numerical features
-        num_cols = ['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'view', 'condition', 'age_built', 'years_since_renovation', 'weekday', 'days_since_first', 'cityzip_encoded']
+        num_cols = ['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'view', 'condition', 'age_built', 'years_since_renovation', 'weekday', 'days_since_first', 'cityzip_encoded', 'price_per_sqft', 'sqft_living_per_age']
         X_train, scaler = standardize(X_train, num_cols)
         X_val, _ = standardize(X_val, num_cols, scaler=scaler)
         X_test, _ = standardize(X_test, num_cols, scaler=scaler)

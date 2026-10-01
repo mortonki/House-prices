@@ -42,7 +42,6 @@ def engineer_house_features(
         df['days_since_first'] = (df['date'] - min_date).dt.days
     else:
         df['days_since_first'] = np.nan
-    # df.drop(columns=['date'], inplace=True)
 
     # Renovation Features
     df.loc[df['yr_renovated'] <= 0, 'yr_renovated'] = df['yr_built']
@@ -52,12 +51,14 @@ def engineer_house_features(
     sale_year = df['date'].dt.year
     df['age_built'] = sale_year - df['yr_built']
     df['years_since_renovation'] = sale_year - df['yr_renovated']
+
+    # Interaction Features
+    df['sqft_living_per_age'] = df['sqft_living'] / (df['age_built'] + 1) # Avoid division by zero
     
     # Drop original year columns
     df.drop(columns=['yr_built', 'yr_renovated'], inplace=True)
     # Date Cleanup
     df.drop(columns=['date'], inplace=True)
-
 
     # Basement Features
     df['has_basement'] = (df['sqft_basement'] > 0).astype(int)
@@ -99,6 +100,9 @@ def engineer_house_features(
         rare_types = [str(value) for value in counts[counts.lt(threshold)].index]
     
     df['street_type'] = df['street_type'].apply(lambda x: 'Other' if x in rare_types else x)
+
+    # Neighborhood/Street interactions
+    # We can't easily do string interactions, but we can create a 'street_type' + 'age' interaction if needed.
 
     # Geographic Features
     df[['state', 'zip']] = df['statezip'].str.split(' ', expand=True)
